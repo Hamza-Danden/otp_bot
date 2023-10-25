@@ -4,6 +4,8 @@ const { Telegraf, Markup } = require("telegraf");
 const { message } = require("telegraf/filters");
 const db = require("../db/connection"); // Import your database connection
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const initiateCall = require("./../call");
+
 const {
   checkSubscriptionValidity,
   buyKeyMSG,
@@ -52,6 +54,24 @@ bot.help((ctx) => {
   ctx.reply(
     "Available commands:\n/sticker - Send me a sticker\nhi - Greet the bot\n /addscript - Add a new script\n /listscripts - List all scripts\n /deletescript - Delete a script\n /updatescript - Update a script\n /runscript - Run a script\n /help - Show this help message"
   );
+});
+
+bot.command("survey", async (ctx) => {
+  // console.log("hii from survey");
+  try {
+    console.log(
+      `from: ${ctx.message.text.split(" ")[1]}\nto: ${
+        ctx.message.text.split(" ")[2]
+      }`
+    );
+    initiateCall(
+      ctx.message.text.split(" ")[1],
+      ctx.message.text.split(" ")[2]
+    );
+    ctx.reply("dev..");
+  } catch (err) {
+    ctx.reply("internal error");
+  }
 });
 
 // Hi command handler
